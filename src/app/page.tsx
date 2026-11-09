@@ -59,7 +59,10 @@ export default async function Home({ searchParams }: { searchParams: SP }) {
           </p>
         </div>
       </section>
-      <footer className="text-center text-xs text-muted py-4">Acampamento Católico da Hallel Escola · Franca/SP</footer>
+      <footer className="text-center text-xs text-muted py-4">
+        Acampamento Católico da Hallel Escola · Franca/SP ·{" "}
+        <Link href="/privacidade" className="underline">Privacidade</Link>
+      </footer>
     </main>
   );
 }
