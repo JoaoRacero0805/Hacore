@@ -42,7 +42,7 @@ export function MeetingFields({ meeting, places, defaultDate }: { meeting?: Meet
       </label>
       <label className="flex items-center gap-2 text-sm font-medium">
         <input type="checkbox" name="isVisible" defaultChecked={meeting ? meeting.isVisible : true} className="size-4 accent-[var(--laranja)]" />
-        Visível para os jovens
+        Visível para os campistas
       </label>
     </>
   );

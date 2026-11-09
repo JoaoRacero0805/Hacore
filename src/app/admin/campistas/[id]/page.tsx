@@ -10,7 +10,7 @@ import { adminUpdateProfile, togglePresence } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
-export default async function Jovem({ params }: { params: Promise<{ id: string }> }) {
+export default async function Campista({ params }: { params: Promise<{ id: string }> }) {
   await requireAdmin();
   const { id } = await params;
   const store = await getStore();
@@ -22,7 +22,7 @@ export default async function Jovem({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="flex flex-col gap-5">
-      <Link href="/admin" className="text-sm text-muted">← Jovens</Link>
+      <Link href="/admin" className="text-sm text-muted">← Campistas</Link>
       <div className="flex items-center gap-4">
         <Avatar name={user.name} src={user.photoUrl} size={60} />
         <div className="min-w-0">

@@ -11,7 +11,7 @@ const PER_PAGE = 30;
 
 type SP = Promise<{ q?: string; sort?: string; dir?: string; page?: string }>;
 
-export default async function Jovens({ searchParams }: { searchParams: SP }) {
+export default async function Campistas({ searchParams }: { searchParams: SP }) {
   await requireAdmin();
   const sp = await searchParams;
   const q = sp.q?.trim() ?? "";
@@ -44,7 +44,7 @@ export default async function Jovens({ searchParams }: { searchParams: SP }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="display text-4xl">Jovens</h1>
+          <h1 className="display text-4xl">Campistas</h1>
           <p className="text-sm text-muted">
             {total} {q ? "encontrados" : "cadastrados"} · presenças contadas em <b>{cycle.name}</b>
           </p>
@@ -57,7 +57,7 @@ export default async function Jovens({ searchParams }: { searchParams: SP }) {
       <form className="flex gap-2" action="/admin">
         <input type="hidden" name="sort" value={sort} />
         <input type="hidden" name="dir" value={desc ? "desc" : "asc"} />
-        <input className="input" name="q" defaultValue={q} placeholder="Buscar por nome ou email" aria-label="Buscar jovem" />
+        <input className="input" name="q" defaultValue={q} placeholder="Buscar por nome ou email" aria-label="Buscar campista" />
         <button className="btn btn-primary">Buscar</button>
       </form>
 
@@ -67,11 +67,11 @@ export default async function Jovens({ searchParams }: { searchParams: SP }) {
           <span className="w-20 text-center">{sortLink("total", "Presenças")}</span>
           <span className="w-20 text-right">{sortLink("last", "Última")}</span>
         </div>
-        {rows.length === 0 && <p className="p-4 text-muted text-sm">Nenhum jovem encontrado.</p>}
+        {rows.length === 0 && <p className="p-4 text-muted text-sm">Nenhum campista encontrado.</p>}
         <ul className="divide-y divide-line">
           {rows.map((u) => (
             <li key={u.id}>
-              <Link href={`/admin/jovens/${u.id}`} className="grid grid-cols-[1fr_auto_auto] items-center gap-3 px-4 py-2.5 hover:bg-soft">
+              <Link href={`/admin/campistas/${u.id}`} className="grid grid-cols-[1fr_auto_auto] items-center gap-3 px-4 py-2.5 hover:bg-soft">
                 <span className="flex items-center gap-3 min-w-0">
                   <Avatar name={u.name} src={u.photoUrl} size={34} />
                   <span className="min-w-0">

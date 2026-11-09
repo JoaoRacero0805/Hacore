@@ -10,8 +10,11 @@ export default async function Mural() {
   const notices = await (await getStore()).listNotices({ activeOn: todaySP() });
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="display text-4xl">Mural de avisos</h1>
-      {notices.length === 0 ? <p className="text-muted">Nenhum aviso no momento.</p> : notices.map((n) => <NoticeCard key={n.id} n={n} />)}
+      <div>
+        <h1 className="display text-4xl">Mural</h1>
+        <p className="text-sm text-muted mt-1">Recados da coordenação.</p>
+      </div>
+      {notices.length === 0 ? <p className="text-muted">Nenhum recado por enquanto.</p> : notices.map((n) => <NoticeCard key={n.id} n={n} />)}
     </div>
   );
 }

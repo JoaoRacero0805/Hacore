@@ -1,13 +1,17 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Monogram } from "@/components/Logo";
 import { getCurrent, DEMO_ADMIN } from "@/lib/session";
 import { isDemo } from "@/lib/config";
 import { demoSignIn, googleSignIn } from "./actions";
 
-export default async function Home() {
+type SP = Promise<{ modo?: string }>;
+
+export default async function Home({ searchParams }: { searchParams: SP }) {
   const current = await getCurrent();
   if (current) redirect(current.user.onboarded ? "/inicio" : "/bem-vindo");
   const demo = isDemo();
+  const criar = (await searchParams).modo === "criar";
 
   return (
     <main className="min-h-dvh flex flex-col">
@@ -15,30 +19,44 @@ export default async function Home() {
         <Monogram size={72} />
         <p className="mt-6 text-sm tracking-widest uppercase opacity-80">Acampamento</p>
         <h1 className="display text-6xl sm:text-7xl mt-1">Hacoré</h1>
-        <p className="mt-4 max-w-sm text-base opacity-90">
-          Marque sua presença nas reuniões de sábado e fique por dentro dos avisos do grupo.
-        </p>
 
-        <div className="mt-10 w-full max-w-sm flex flex-col gap-3">
+        <div className="mt-10 w-full max-w-sm card p-5 text-left text-ink flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-1 rounded-full bg-soft p-1 text-sm font-semibold" role="tablist">
+            <Link href="/" replace role="tab" aria-selected={!criar} className={`rounded-full py-2 text-center ${!criar ? "bg-laranja text-white" : "text-muted"}`}>
+              Fazer login
+            </Link>
+            <Link href="/?modo=criar" replace role="tab" aria-selected={criar} className={`rounded-full py-2 text-center ${criar ? "bg-laranja text-white" : "text-muted"}`}>
+              Criar conta
+            </Link>
+          </div>
+          <p className="text-sm text-muted">
+            {criar
+              ? "Use sua conta Google. Depois é só dizer quando você fez o Hacoré."
+              : "Entre com a conta Google que você usou no cadastro."}
+          </p>
+
           {!demo && (
             <form action={googleSignIn}>
-              <button className="btn w-full py-4 bg-white text-[#1f1f1f] text-base shadow-sm hover:brightness-95">
-                <GoogleIcon /> Entrar com Google
+              <button className="btn w-full py-3.5 bg-white text-[#1f1f1f] border border-line text-base shadow-sm hover:brightness-95">
+                <GoogleIcon /> {criar ? "Criar conta com Google" : "Entrar com Google"}
               </button>
             </form>
           )}
           {demo && (
-            <div className="card p-4 text-left text-ink">
-              <p className="text-sm font-semibold">Modo demonstração</p>
-              <p className="text-xs text-muted mt-1">O login com Google ainda não foi configurado. Escolha um usuário de teste:</p>
-              <form action={demoSignIn} className="mt-3 flex flex-col gap-2">
-                <button name="email" value="jovem1@exemplo.com" className="btn btn-secondary w-full">Entrar como jovem</button>
-                <button name="email" value="novo@exemplo.com" className="btn btn-secondary w-full">Entrar como jovem novo (primeiro acesso)</button>
-                <button name="email" value={DEMO_ADMIN} className="btn btn-primary w-full">Entrar como coordenação</button>
-              </form>
-            </div>
+            <form action={demoSignIn} className="flex flex-col gap-2">
+              <label className="field">
+                <span>Email (modo demonstração)</span>
+                <input className="input" name="email" type="email" required autoComplete="off" placeholder="voce@gmail.com" />
+              </label>
+              <button className="btn btn-primary w-full">{criar ? "Criar conta" : "Entrar"}</button>
+              <p className="text-xs text-muted">
+                O login com Google ainda não foi configurado. Para testar a coordenação, use {DEMO_ADMIN}.
+              </p>
+            </form>
           )}
-          <p className="text-xs opacity-70">Usamos só seu nome, email e foto da conta Google. Nenhuma senha fica guardada.</p>
+          <p className="text-xs text-muted">
+            Se o seu email for da coordenação, o painel já aparece pra você. Nenhuma senha fica guardada.
+          </p>
         </div>
       </section>
       <footer className="text-center text-xs text-muted py-4">Acampamento Católico da Hallel Escola · Franca/SP</footer>

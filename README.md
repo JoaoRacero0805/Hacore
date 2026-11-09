@@ -3,7 +3,7 @@
 App de presenças, reuniões e mural de avisos do **Acampamento Hacoré** (Hallel Escola, Franca/SP).
 
 - **Login só com Google.** Nenhuma senha fica guardada.
-- **Presença com localização.** O jovem só consegue marcar presença:
+- **Presença com localização.** O campista só consegue marcar presença:
   - no horário da reunião: do início até as 23:59 do dia, por padrão;
   - dentro do raio do local: 150 m por padrão, contando também a imprecisão do GPS, até no máximo 100 m a mais.
 - **A localização não é guardada.** Ela é usada só para conferir a distância na hora de marcar.
@@ -11,7 +11,7 @@ App de presenças, reuniões e mural de avisos do **Acampamento Hacoré** (Halle
 - **Zerar presenças** (depois de cada acampamento: Corpus Christi e novembro) começa um ciclo novo. A contagem volta a 0, mas o histórico fica guardado e pode ser exportado. Reuniões já agendadas passam para o ciclo novo.
 - **Admins** (todos com os mesmos poderes) podem:
   - cadastrar reuniões e locais;
-  - marcar e desmarcar presença de cada jovem (o total é calculado, nunca digitado);
+  - marcar e desmarcar presença de cada campista (o total é calculado, nunca digitado);
   - publicar no mural;
   - exportar em Excel;
   - adicionar outros admins.
@@ -31,7 +31,7 @@ npm run dev
 
 Sem variáveis de ambiente, o app abre em **modo demonstração**:
 - usa um banco Postgres em memória (PGlite) com dados de exemplo;
-- tem botões para entrar como jovem ou como coordenação.
+- o login pede só um email (qualquer um). Para entrar como coordenação, use `admin@demo.hacore`.
 
 > O ponto da Escola Hallel na demonstração é aproximado. No app de verdade, o ponto é marcado pelo admin (veja abaixo).
 
@@ -69,7 +69,7 @@ db/schema.sql                 tabelas (idempotente)
 src/lib/store/                acesso ao banco (Postgres/Neon e PGlite)
 src/lib/rules.ts              regra da presença (janela, raio, sem localização)
 src/lib/geo.ts, time.ts       distância e horário de Brasília
-src/app/(app)/                telas do jovem: início, mural, perfil
-src/app/admin/                painel: jovens, reuniões, mural, locais, admins e ciclos, exportar
+src/app/(app)/                telas do campista: início, mural, perfil
+src/app/admin/                painel: campistas, reuniões, mural, locais, admins e ciclos, exportar
 tests/                        testes (Vitest + PGlite)
 ```
