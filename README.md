@@ -8,7 +8,7 @@ App de presenças, reuniões e mural de avisos do **Acampamento Hacoré** (Halle
   - dentro do raio do local: 150 m por padrão, contando também a imprecisão do GPS, até no máximo 100 m a mais.
 - **A localização não é guardada.** Ela é usada só para conferir a distância na hora de marcar.
 - **GPS falhou ou foi negado?** A presença é registrada com a etiqueta **"sem localização"**. A coordenação vê essas presenças num filtro e remove as suspeitas.
-- **Zerar presenças** (depois do acampamento) começa um ciclo novo. A contagem volta a 0, mas o histórico fica guardado e pode ser exportado. Reuniões já agendadas passam para o ciclo novo.
+- **Zerar presenças** (depois de cada acampamento: Corpus Christi e novembro) começa um ciclo novo. A contagem volta a 0, mas o histórico fica guardado e pode ser exportado. Reuniões já agendadas passam para o ciclo novo.
 - **Admins** (todos com os mesmos poderes) podem:
   - cadastrar reuniões e locais;
   - marcar e desmarcar presença de cada jovem (o total é calculado, nunca digitado);

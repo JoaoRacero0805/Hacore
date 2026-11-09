@@ -84,7 +84,7 @@ create table if not exists notices (
 );
 
 -- Dados iniciais.
-insert into cycles (id, name) values ('ciclo-inicial', 'Início do app') on conflict do nothing;
+insert into cycles (id, name) values ('ciclo-inicial', 'Pós-acampamento de novembro 2026') on conflict do nothing;
 insert into places (id, name, address, is_default)
   values ('escola-hallel', 'Escola Hallel', 'Av. Vereador José Granzotte, 2379 - Franca/SP', true)
   on conflict do nothing;

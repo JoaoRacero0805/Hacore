@@ -2,7 +2,7 @@ import { getStore } from "@/lib/store";
 import { requireAdmin } from "@/lib/session";
 import { envAdmins } from "@/lib/config";
 import { ActionForm, SubmitButton } from "@/components/ActionForm";
-import { formatDateLong } from "@/lib/time";
+import { formatDateLong, todaySP } from "@/lib/time";
 import { addAdmin, removeAdmin, startNewCycle } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,9 @@ export default async function Config() {
   const [admins, cycles] = await Promise.all([store.listAdmins(), store.listCycles()]);
   const fixed = envAdmins();
   const current = cycles.find((c) => !c.endedAt)!;
-  const suggested = `Pós-Hacoré ${new Date().getFullYear()}`;
+  // Dois ciclos por ano: depois do acampamento de Corpus Christi (meio do ano) e depois do de novembro.
+  const [y, mo] = todaySP().split("-").map(Number);
+  const suggested = mo >= 5 && mo <= 10 ? `Pós-Corpus Christi ${y}` : `Pós-acampamento de novembro ${mo >= 11 ? y : y - 1}`;
 
   return (
     <div className="grid gap-5 lg:grid-cols-2 items-start">
@@ -58,7 +60,7 @@ export default async function Config() {
             Ciclo atual: <b>{current.name}</b>, desde {formatDateLong(current.startedAt)}.
           </p>
           <p className="text-sm text-muted">
-            Use depois do acampamento. A contagem de todos volta a 0, mas nada é apagado: o ciclo atual fica no histórico abaixo e pode ser exportado.
+            Use depois de cada acampamento (Corpus Christi e novembro). A contagem de todos volta a 0, mas nada é apagado: o ciclo atual fica no histórico abaixo e pode ser exportado.
           </p>
           <ActionForm action={startNewCycle} className="flex flex-col gap-3">
             <label className="field">
