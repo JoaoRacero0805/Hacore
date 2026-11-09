@@ -49,7 +49,7 @@ export default async function Inicio() {
                 )}
               </div>
             ) : (
-              <CheckInButton meetingId={m.id} />
+              <CheckInButton meetingId={m.id} needsPassword={m.password.trim() !== ""} />
             )}
           </div>
         </section>

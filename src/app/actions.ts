@@ -33,14 +33,14 @@ export async function logout() {
 
 type Pos = { lat: number; lng: number; accuracy?: number } | null;
 
-export async function checkIn(meetingId: string, position: Pos): Promise<CheckInResult | { ok: false; reason: "error"; message: string }> {
+export async function checkIn(meetingId: string, position: Pos, password?: string): Promise<CheckInResult | { ok: false; reason: "error"; message: string }> {
   try {
     const { user } = await actionUser();
     const p =
       position && typeof position.lat === "number" && typeof position.lng === "number"
         ? { lat: position.lat, lng: position.lng, accuracy: typeof position.accuracy === "number" ? position.accuracy : undefined }
         : null;
-    const r = await selfCheckIn(await getStore(), { userId: user.id, meetingId: String(meetingId), position: p });
+    const r = await selfCheckIn(await getStore(), { userId: user.id, meetingId: String(meetingId), position: p, password: typeof password === "string" ? password.slice(0, 100) : null });
     if (r.ok) revalidatePath("/inicio");
     return r;
   } catch (e) {

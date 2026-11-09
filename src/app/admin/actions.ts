@@ -28,6 +28,7 @@ function meetingInput(fd: FormData): MeetingInput {
     closesAt: spInstant(d, close),
     placeId,
     isVisible: bool(fd, "isVisible"),
+    password: required(fd, "password", "senha da reunião", 60),
   };
 }
 

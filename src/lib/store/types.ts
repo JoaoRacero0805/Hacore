@@ -36,6 +36,8 @@ export type Meeting = {
   startsAt: Date;
   closesAt: Date;
   isVisible: boolean;
+  /** Senha falada no fim da reunião. Vazia = não pede senha. Nunca enviar ao navegador do campista. */
+  password: string;
   presenceCount: number;
   noLocationCount: number;
 };
@@ -48,6 +50,7 @@ export type MeetingInput = {
   closesAt: Date;
   placeId: string | null;
   isVisible: boolean;
+  password: string;
 };
 
 export type LocationStatus = "ok" | "none";

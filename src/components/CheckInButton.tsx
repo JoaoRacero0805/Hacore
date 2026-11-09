@@ -27,17 +27,24 @@ const REASONS: Record<string, string> = {
   closed: "A presença desta reunião já fechou.",
   not_found: "Reunião não encontrada.",
   already: "Sua presença já estava registrada.",
+  password: "Senha incorreta. Confira a senha que a coordenação falou.",
 };
 
-export function CheckInButton({ meetingId }: { meetingId: string }) {
+export function CheckInButton({ meetingId, needsPassword = false }: { meetingId: string; needsPassword?: boolean }) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [password, setPassword] = useState("");
   const [, startTransition] = useTransition();
 
-  async function go() {
+  async function go(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (needsPassword && !password.trim()) {
+      setStatus({ kind: "error", text: "Digite a senha que a coordenação falou no fim da reunião." });
+      return;
+    }
     setStatus({ kind: "locating" });
     const pos = await getPosition();
     setStatus({ kind: "sending" });
-    const r = await checkIn(meetingId, pos);
+    const r = await checkIn(meetingId, pos, needsPassword ? password : undefined);
     if (r.ok) {
       setStatus({ kind: "done", location: r.location });
       startTransition(() => {});
@@ -61,8 +68,25 @@ export function CheckInButton({ meetingId }: { meetingId: string }) {
 
   const busy = status.kind === "locating" || status.kind === "sending";
   return (
-    <div className="flex flex-col gap-2">
-      <button onClick={go} disabled={busy} className="btn btn-primary w-full py-4 text-lg">
+    <form onSubmit={go} className="flex flex-col gap-2">
+      {needsPassword && (
+        <label className="flex flex-col gap-1 text-sm font-semibold">
+          Senha da reunião
+          <input
+            className="input text-ink text-lg"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="off"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            maxLength={60}
+            placeholder="A coordenação fala no fim da reunião"
+            disabled={busy}
+          />
+        </label>
+      )}
+      <button type="submit" disabled={busy} className="btn btn-primary w-full py-4 text-lg">
         {status.kind === "locating" ? "Pegando sua localização…" : status.kind === "sending" ? "Registrando…" : "Marcar presença"}
       </button>
       <p className="text-xs text-hero-ink/70 text-center">
@@ -73,6 +97,6 @@ export function CheckInButton({ meetingId }: { meetingId: string }) {
           {status.text}
         </p>
       )}
-    </div>
+    </form>
   );
 }

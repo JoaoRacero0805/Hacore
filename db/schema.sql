@@ -58,6 +58,8 @@ create table if not exists meetings (
   check (closes_at > starts_at)
 );
 create index if not exists meetings_cycle_date on meetings (cycle_id, date desc);
+-- Senha da reunião: a coordenação fala no fim da reunião e o campista digita para marcar presença.
+alter table meetings add column if not exists password text not null default '';
 
 -- Presença. A localização do jovem NÃO é guardada: só o resultado da verificação.
 create table if not exists presences (

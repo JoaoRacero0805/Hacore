@@ -3,6 +3,7 @@
 App de presenças, reuniões e mural de avisos do **Acampamento Hacoré** (Hallel Escola, Franca/SP).
 
 - **Login só com Google.** Nenhuma senha fica guardada.
+- **Senha da reunião.** A coordenação define a senha de cada reunião e fala no fim. O campista digita a senha para marcar presença (maiúsculas, acentos e espaços não importam).
 - **Presença com localização.** O campista só consegue marcar presença:
   - no horário da reunião: do início até as 23:59 do dia, por padrão;
   - dentro do raio do local: 150 m por padrão, contando também a imprecisão do GPS, até no máximo 100 m a mais.

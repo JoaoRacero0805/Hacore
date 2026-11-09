@@ -32,7 +32,7 @@ beforeEach(async () => {
   await store.updatePlace("escola-hallel", { name: "Escola Hallel", address: "", lat: HALLEL.lat, lng: HALLEL.lng, radiusM: 150 });
   const cycle = await store.currentCycle();
   meetingId = await store.createMeeting(
-    { theme: "Teste", description: "", date: DATE, startsAt: spInstant(DATE, "16:30"), closesAt: spInstant(DATE, "23:59"), placeId: "escola-hallel", isVisible: true },
+    { theme: "Teste", description: "", date: DATE, startsAt: spInstant(DATE, "16:30"), closesAt: spInstant(DATE, "23:59"), placeId: "escola-hallel", isVisible: true, password: "" },
     cycle.id,
     "admin@x.com",
   );
@@ -93,6 +93,36 @@ describe("presença do campista", () => {
   });
 });
 
+describe("senha da reunião", () => {
+  beforeEach(async () => {
+    const m = (await store.getMeeting(meetingId))!;
+    await store.updateMeeting(meetingId, { ...m, password: "Coração de Jesus" });
+  });
+
+  it("recusa sem senha ou com senha errada e não grava nada", async () => {
+    expect(await selfCheckIn(store, { userId, meetingId, position: NEAR, now: DURING })).toMatchObject({ ok: false, reason: "password" });
+    expect(await selfCheckIn(store, { userId, meetingId, position: NEAR, password: "coracao", now: DURING })).toMatchObject({ reason: "password" });
+    expect(await store.meetingPresences(meetingId)).toHaveLength(0);
+  });
+
+  it("aceita ignorando maiúsculas, acentos e espaços", async () => {
+    const r = await selfCheckIn(store, { userId, meetingId, position: NEAR, password: "  coracao  de JESUS ", now: DURING });
+    expect(r).toMatchObject({ ok: true, location: "ok" });
+  });
+
+  it("senha certa sem localização continua indo para revisão", async () => {
+    expect(await selfCheckIn(store, { userId, meetingId, position: null, password: "Coração de Jesus", now: DURING })).toMatchObject({ ok: true, location: "none" });
+  });
+
+  it("senha certa mas longe continua recusada", async () => {
+    expect(await selfCheckIn(store, { userId, meetingId, position: FAR, password: "Coração de Jesus", now: DURING })).toMatchObject({ reason: "far" });
+  });
+
+  it("a senha é salva na reunião", async () => {
+    expect((await store.getMeeting(meetingId))!.password).toBe("Coração de Jesus");
+  });
+});
+
 describe("ciclos (zerar presenças)", () => {
   it("zera a contagem mas guarda o histórico", async () => {
     await selfCheckIn(store, { userId, meetingId, position: NEAR, now: DURING });
@@ -115,7 +145,7 @@ describe("ciclos (zerar presenças)", () => {
     const old = await store.currentCycle();
     const future = new Date(Date.now() + 7 * 86400000);
     const fid = await store.createMeeting(
-      { theme: "Futura", description: "", date: "2099-01-01", startsAt: future, closesAt: new Date(future.getTime() + 3600000), placeId: null, isVisible: true },
+      { theme: "Futura", description: "", date: "2099-01-01", startsAt: future, closesAt: new Date(future.getTime() + 3600000), placeId: null, isVisible: true, password: "" },
       old.id,
       "a",
     );
