@@ -46,7 +46,7 @@ export async function GET(req: Request) {
         camp: p.user.madeCamp ? String(p.user.campYear ?? "Sim") : "Não",
         at: p.createdAt,
         loc: p.location === "ok" ? "Confirmada" : "Sem localização",
-        by: p.source === "admin" ? p.markedBy : "Próprio jovem",
+        by: p.source === "admin" ? p.markedBy : "Próprio campista",
         total: p.totalInCycle,
       });
     ws.getColumn("at").numFmt = "dd/mm/yyyy hh:mm";
@@ -60,7 +60,7 @@ export async function GET(req: Request) {
     const present = new Map<string, "ok" | "none">();
     for (const p of rep.presences) present.set(`${p.userId}|${p.meetingId}`, p.location);
 
-    const ws = wb.addWorksheet("Jovens");
+    const ws = wb.addWorksheet("Campistas");
     ws.columns = [
       { header: "Nome", key: "name", width: 36 },
       { header: "Email", key: "email", width: 34 },

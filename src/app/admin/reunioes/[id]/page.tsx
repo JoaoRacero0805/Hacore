@@ -72,7 +72,7 @@ export default async function Reuniao({ params, searchParams }: { params: Promis
             {presences.length === 0 && <li className="p-4 text-sm text-muted">Ninguém por aqui.</li>}
             {presences.map((p) => (
               <li key={p.user.id} className="flex items-center justify-between gap-3 px-4 py-2.5">
-                <Link href={`/admin/jovens/${p.user.id}`} className="flex items-center gap-3 min-w-0">
+                <Link href={`/admin/campistas/${p.user.id}`} className="flex items-center gap-3 min-w-0">
                   <Avatar name={p.user.name} src={p.user.photoUrl} size={34} />
                   <span className="min-w-0">
                     <span className="block font-medium truncate">{p.user.name}</span>
@@ -98,7 +98,7 @@ export default async function Reuniao({ params, searchParams }: { params: Promis
             <h2 className="font-bold">Adicionar presença</h2>
             <p className="text-xs text-muted">Para quem estava na reunião mas não conseguiu marcar (sem celular, sem bateria…).</p>
             <form className="flex gap-2" action={`/admin/reunioes/${id}`}>
-              <input className="input" name="add" defaultValue={addQ} placeholder="Nome do jovem" aria-label="Buscar jovem para adicionar" />
+              <input className="input" name="add" defaultValue={addQ} placeholder="Nome do campista" aria-label="Buscar campista para adicionar" />
               <button className="btn btn-secondary">Buscar</button>
             </form>
             {addQ && candidates.length === 0 && <p className="text-sm text-muted">Ninguém encontrado. A pessoa precisa ter entrado no app pelo menos uma vez.</p>}

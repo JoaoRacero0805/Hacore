@@ -17,7 +17,8 @@ export async function googleSignIn() {
 
 export async function demoSignIn(formData: FormData) {
   if (!isDemo()) throw new Error("Indisponível.");
-  const email = String(formData.get("email") ?? "");
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) redirect("/");
   (await cookies()).set(DEMO_COOKIE, email, { httpOnly: true, sameSite: "lax", path: "/" });
   redirect("/");
 }

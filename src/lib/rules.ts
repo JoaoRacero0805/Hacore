@@ -13,7 +13,7 @@ export function meetingWindow(m: Pick<Meeting, "startsAt" | "closesAt" | "isVisi
 }
 
 /**
- * Jovem marcando a própria presença.
+ * Campista marcando a própria presença.
  * - Só dentro da janela de horário, em reunião visível do ciclo atual.
  * - Com localização: precisa estar dentro do raio do local.
  * - Sem localização (negada/falhou): a presença é registrada com a etiqueta "sem localização" para a coordenação revisar.

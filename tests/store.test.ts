@@ -36,7 +36,7 @@ beforeEach(async () => {
     cycle.id,
     "admin@x.com",
   );
-  userId = (await store.upsertUserFromLogin({ email: "Jovem@Gmail.com", name: "João", photoUrl: null })).id;
+  userId = (await store.upsertUserFromLogin({ email: "Campista@Gmail.com", name: "João", photoUrl: null })).id;
 });
 
 describe("schema", () => {
@@ -49,7 +49,7 @@ describe("schema", () => {
   });
 });
 
-describe("presença do jovem", () => {
+describe("presença do campista", () => {
   it("marca com localização dentro do raio", async () => {
     const r = await selfCheckIn(store, { userId, meetingId, position: NEAR, now: DURING });
     expect(r).toMatchObject({ ok: true, location: "ok" });
@@ -150,7 +150,7 @@ describe("admin", () => {
   });
 
   it("email é salvo em minúsculo e login repetido não duplica", async () => {
-    const again = await store.upsertUserFromLogin({ email: "jovem@gmail.com", name: "Outro nome", photoUrl: "https://x/y.png" });
+    const again = await store.upsertUserFromLogin({ email: "campista@gmail.com", name: "Outro nome", photoUrl: "https://x/y.png" });
     expect(again.id).toBe(userId);
     expect(again.name).toBe("João");
     expect(again.photoUrl).toBe("https://x/y.png");

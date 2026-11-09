@@ -70,7 +70,7 @@ export async function adminAddPresence(_: ActionState, fd: FormData): Promise<Ac
     const { user } = await actionAdmin();
     const created = await (await getStore()).addPresence({
       meetingId: required(fd, "meetingId", "reunião"),
-      userId: required(fd, "userId", "jovem"),
+      userId: required(fd, "userId", "campista"),
       source: "admin",
       location: "ok",
       markedBy: user.email,
@@ -83,13 +83,13 @@ export async function adminAddPresence(_: ActionState, fd: FormData): Promise<Ac
 export async function adminRemovePresence(_: ActionState, fd: FormData): Promise<ActionState> {
   return run(async () => {
     await actionAdmin();
-    await (await getStore()).removePresence(required(fd, "meetingId", "reunião"), required(fd, "userId", "jovem"));
+    await (await getStore()).removePresence(required(fd, "meetingId", "reunião"), required(fd, "userId", "campista"));
     refresh();
     return "Presença removida.";
   });
 }
 
-/** Marca/desmarca presença de um jovem numa reunião (tela do jovem no painel). */
+/** Marca/desmarca presença de um campista numa reunião (tela do campista no painel). */
 export async function togglePresence(fd: FormData) {
   const { user } = await actionAdmin();
   const store = await getStore();

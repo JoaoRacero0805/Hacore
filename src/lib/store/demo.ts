@@ -15,7 +15,7 @@ export async function seedDemo(store: Store) {
   const names = ["Ana Clara Souza", "Bruno Henrique Lima", "Carolina Mendes", "Davi Rocha", "Eduarda Martins", "Felipe Andrade"];
   const users = [];
   for (const [i, name] of names.entries()) {
-    const u = await store.upsertUserFromLogin({ email: `jovem${i + 1}@exemplo.com`, name, photoUrl: null });
+    const u = await store.upsertUserFromLogin({ email: `campista${i + 1}@exemplo.com`, name, photoUrl: null });
     await store.updateProfile(u.id, { name, madeCamp: i % 2 === 0, campYear: i % 2 === 0 ? 2025 : null });
     users.push(u);
   }
