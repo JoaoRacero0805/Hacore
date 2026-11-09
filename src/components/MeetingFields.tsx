@@ -29,6 +29,11 @@ export function MeetingFields({ meeting, places, defaultDate }: { meeting?: Meet
         </label>
       </div>
       <label className="field">
+        <span>Senha da reunião</span>
+        <input className="input" name="password" required maxLength={60} autoComplete="off" defaultValue={meeting?.password} placeholder="Ex.: coração" />
+        <small className="text-xs text-muted">Fale a senha no fim da reunião. O campista precisa digitar para marcar presença (maiúsculas e acentos não importam).</small>
+      </label>
+      <label className="field">
         <span>Local</span>
         <select className="input" name="placeId" defaultValue={meeting ? (meeting.placeId ?? "") : def}>
           {places.map((p) => (

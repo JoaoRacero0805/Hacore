@@ -3,7 +3,7 @@ import type { Meeting, Store } from "./store/types";
 
 export type CheckInResult =
   | { ok: true; location: "ok" | "none"; distance?: number }
-  | { ok: false; reason: "not_found" | "not_open" | "closed" | "not_yet" | "far" | "already"; distance?: number };
+  | { ok: false; reason: "not_found" | "not_open" | "closed" | "not_yet" | "far" | "already" | "password"; distance?: number };
 
 /** A presença fica aberta do início da reunião até o fim da janela (padrão 23:59 do dia). */
 export function meetingWindow(m: Pick<Meeting, "startsAt" | "closesAt" | "isVisible">, now: Date): "not_yet" | "open" | "closed" {
@@ -12,16 +12,27 @@ export function meetingWindow(m: Pick<Meeting, "startsAt" | "closesAt" | "isVisi
   return "open";
 }
 
+/** Compara a senha sem diferenciar maiúsculas, acentos e espaços nas pontas. */
+export function normalizePassword(s: string): string {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+export function passwordMatches(meetingPassword: string, typed: string | null | undefined): boolean {
+  const expected = normalizePassword(meetingPassword);
+  return expected === "" || normalizePassword(typed ?? "") === expected;
+}
+
 /**
  * Campista marcando a própria presença.
  * - Só dentro da janela de horário, em reunião visível do ciclo atual.
+ * - Precisa digitar a senha da reunião (falada pela coordenação no fim).
  * - Com localização: precisa estar dentro do raio do local.
  * - Sem localização (negada/falhou): a presença é registrada com a etiqueta "sem localização" para a coordenação revisar.
  * A posição recebida só é usada para o cálculo e nunca é gravada.
  */
 export async function selfCheckIn(
   store: Store,
-  input: { userId: string; meetingId: string; position: Position | null; now?: Date },
+  input: { userId: string; meetingId: string; position: Position | null; password?: string | null; now?: Date },
 ): Promise<CheckInResult> {
   const now = input.now ?? new Date();
   const meeting = await store.getMeeting(input.meetingId);
@@ -30,6 +41,7 @@ export async function selfCheckIn(
   if (meeting.cycleId !== cycle.id) return { ok: false, reason: "closed" };
   const w = meetingWindow(meeting, now);
   if (w !== "open") return { ok: false, reason: w };
+  if (!passwordMatches(meeting.password, input.password)) return { ok: false, reason: "password" };
 
   const place = meeting.placeId ? await store.getPlace(meeting.placeId) : null;
   const geo = checkPosition(place ? { lat: place.lat, lng: place.lng, radius_m: place.radiusM } : null, input.position);

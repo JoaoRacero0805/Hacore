@@ -42,6 +42,10 @@ export default async function Reuniao({ params, searchParams }: { params: Promis
           <p className="text-sm text-muted mt-1">
             {formatDateLong(meeting.date)} · <span className={w === "open" ? "text-ok font-semibold" : ""}>{status}</span>
           </p>
+          <p className="mt-2 text-sm">
+            Senha:{" "}
+            {meeting.password ? <span className="badge badge-orange text-base">{meeting.password}</span> : <span className="text-muted">sem senha</span>}
+          </p>
         </div>
         <a href={`/admin/exportar?reuniao=${meeting.id}`} className="btn btn-secondary">Exportar Excel</a>
       </div>

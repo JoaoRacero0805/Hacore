@@ -25,7 +25,7 @@ export async function seedDemo(store: Store) {
   const themes = ["Vaidade", "Dons do Espírito Santo", "Sagrado Coração"];
   for (const [i, date] of past.entries()) {
     const id = await store.createMeeting(
-      { theme: themes[i], description: "", date, startsAt: spInstant(date, "16:30"), closesAt: spInstant(date, "23:59"), placeId: "escola-hallel", isVisible: true },
+      { theme: themes[i], description: "", date, startsAt: spInstant(date, "16:30"), closesAt: spInstant(date, "23:59"), placeId: "escola-hallel", isVisible: true, password: "" },
       cycle.id,
       "demo",
     );
@@ -36,13 +36,13 @@ export async function seedDemo(store: Store) {
   // Uma reunião aberta agora, para testar o "Marcar presença" na demonstração.
   const now = new Date();
   await store.createMeeting(
-    { theme: "Reunião de demonstração (aberta agora)", description: "Use para testar a presença.", date: today, startsAt: new Date(now.getTime() - 3600_000), closesAt: spInstant(today, "23:59") > now ? spInstant(today, "23:59") : new Date(now.getTime() + 3600_000), placeId: "escola-hallel", isVisible: true },
+    { theme: "Reunião de demonstração (aberta agora)", description: "Use para testar a presença. A senha é: hacore", date: today, startsAt: new Date(now.getTime() - 3600_000), closesAt: spInstant(today, "23:59") > now ? spInstant(today, "23:59") : new Date(now.getTime() + 3600_000), placeId: "escola-hallel", isVisible: true, password: "hacore" },
     cycle.id,
     "demo",
   );
   if (sat !== today) {
     await store.createMeeting(
-      { theme: "Próxima reunião", description: "", date: sat, startsAt: spInstant(sat, "16:30"), closesAt: spInstant(sat, "23:59"), placeId: "escola-hallel", isVisible: true },
+      { theme: "Próxima reunião", description: "", date: sat, startsAt: spInstant(sat, "16:30"), closesAt: spInstant(sat, "23:59"), placeId: "escola-hallel", isVisible: true, password: "" },
       cycle.id,
       "demo",
     );

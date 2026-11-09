@@ -35,7 +35,7 @@ function toCycle(r: Row): Cycle {
 
 const MEETING_SELECT = `
   select m.id, m.cycle_id, m.place_id, p.name as place_name, m.theme, m.description,
-         to_char(m.date, 'YYYY-MM-DD') as date, m.starts_at, m.closes_at, m.is_visible,
+         to_char(m.date, 'YYYY-MM-DD') as date, m.starts_at, m.closes_at, m.is_visible, m.password,
          (select count(*)::int from presences x where x.meeting_id = m.id) as presence_count,
          (select count(*)::int from presences x where x.meeting_id = m.id and x.location = 'none') as no_location_count
   from meetings m left join places p on p.id = m.place_id`;
@@ -43,7 +43,7 @@ function toMeeting(r: Row): Meeting {
   return {
     id: String(r.id), cycleId: String(r.cycle_id), placeId: s(r.place_id), placeName: s(r.place_name),
     theme: String(r.theme), description: String(r.description ?? ""), date: String(r.date),
-    startsAt: d(r.starts_at), closesAt: d(r.closes_at), isVisible: Boolean(r.is_visible),
+    startsAt: d(r.starts_at), closesAt: d(r.closes_at), isVisible: Boolean(r.is_visible), password: String(r.password ?? ""),
     presenceCount: Number(r.presence_count ?? 0), noLocationCount: Number(r.no_location_count ?? 0),
   };
 }
@@ -215,17 +215,17 @@ export function createPostgresStore(query: Query): Store {
     },
     async createMeeting(i: MeetingInput, cycleId, by) {
       const r = await one(
-        `insert into meetings (cycle_id, place_id, theme, description, date, starts_at, closes_at, is_visible, created_by)
-         values ($1, $2, $3, $4, $5::date, $6, $7, $8, $9) returning id`,
-        [cycleId, i.placeId, i.theme, i.description, i.date, i.startsAt, i.closesAt, i.isVisible, by],
+        `insert into meetings (cycle_id, place_id, theme, description, date, starts_at, closes_at, is_visible, created_by, password)
+         values ($1, $2, $3, $4, $5::date, $6, $7, $8, $9, $10) returning id`,
+        [cycleId, i.placeId, i.theme, i.description, i.date, i.startsAt, i.closesAt, i.isVisible, by, i.password],
       );
       return String(r!.id);
     },
     async updateMeeting(id, i) {
       await query(
-        `update meetings set place_id = $2, theme = $3, description = $4, date = $5::date, starts_at = $6, closes_at = $7, is_visible = $8
+        `update meetings set place_id = $2, theme = $3, description = $4, date = $5::date, starts_at = $6, closes_at = $7, is_visible = $8, password = $9
          where id = $1`,
-        [id, i.placeId, i.theme, i.description, i.date, i.startsAt, i.closesAt, i.isVisible],
+        [id, i.placeId, i.theme, i.description, i.date, i.startsAt, i.closesAt, i.isVisible, i.password],
       );
     },
     async deleteMeeting(id) {
