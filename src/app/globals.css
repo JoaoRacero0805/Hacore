@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* Identidade do Hacoré: laranja vibrante, azul-marinho, creme. */
+:root {
+  --laranja: #ff7a00;
+  --laranja-escuro: #d96400;
+  --marinho: #1e2452;
+  --royal: #1f2bd6;
+  --creme: #f2e3c2;
+
+  --bg: #fbf6ee;
+  --card: #ffffff;
+  --ink: #171a33;
+  --muted: #5c6080;
+  --line: #e8e1d4;
+  --soft: #f4ede1;
+  --ok: #1d7a46;
+  --ok-bg: #e3f4ea;
+  --warn: #9a5b00;
+  --warn-bg: #fff1dc;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+  --hero: #1e2452;
+  --hero-ink: #f2e3c2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1228;
+    --card: #181c3d;
+    --ink: #f4ecdb;
+    --muted: #a9acc8;
+    --line: #2a2f5c;
+    --soft: #20254b;
+    --ok: #5fd394;
+    --ok-bg: #143323;
+    --warn: #ffb44d;
+    --warn-bg: #3a2810;
+    --danger: #ff8a80;
+    --danger-bg: #3d1717;
+    --hero: #232a66;
+    --hero-ink: #f2e3c2;
+  }
+}
+
+@theme inline {
+  --color-laranja: var(--laranja);
+  --color-laranja-escuro: var(--laranja-escuro);
+  --color-marinho: var(--marinho);
+  --color-royal: var(--royal);
+  --color-creme: var(--creme);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-soft: var(--soft);
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-hero: var(--hero);
+  --color-hero-ink: var(--hero-ink);
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: filter 0.15s, background 0.15s, opacity 0.15s;
+  cursor: pointer;
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary { background: var(--laranja); color: #fff; }
+.btn-primary:hover:not(:disabled) { filter: brightness(0.95); }
+.btn-secondary { background: var(--soft); color: var(--ink); border: 1px solid var(--line); }
+.btn-secondary:hover:not(:disabled) { filter: brightness(0.97); }
+.btn-danger { background: var(--danger-bg); color: var(--danger); }
+.btn-ghost { color: var(--muted); }
+.btn-ghost:hover { color: var(--ink); background: var(--soft); }
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field > span { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.input {
+  width: 100%;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+}
+.input:focus { outline: 2px solid var(--laranja); outline-offset: 0; border-color: transparent; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-ok { background: var(--ok-bg); color: var(--ok); }
+.badge-warn { background: var(--warn-bg); color: var(--warn); }
+.badge-muted { background: var(--soft); color: var(--muted); }
+.badge-orange { background: var(--laranja); color: #fff; }
+
+a { text-underline-offset: 3px; }

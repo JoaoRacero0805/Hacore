@@ -1,0 +1,35 @@
+{
+  "name": "hacore-presencas",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "db:setup": "node scripts/db-setup.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.15",
+    "@neondatabase/serverless": "1.2.0",
+    "exceljs": "4.4.0",
+    "next": "16.4.3",
+    "next-auth": "5.0.0-beta.32",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.14",
+    "@types/node": "22.15.0",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "tailwindcss": "4.1.14",
+    "typescript": "5.9.3",
+    "vitest": "4.1.12"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
+  }
+}
